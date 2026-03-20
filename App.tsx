@@ -17,6 +17,7 @@ import { Header } from './components/Header';
 import { BottomPanel } from './components/BottomPanel';
 import { LayerPanel } from './components/LayerPanel';
 import { FloatingControls } from './components/FloatingControls';
+import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { MapTheme, MapLayerType, Destination, RouteInfo, Language, WeatherData } from './types';
 import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_SOURCES, POPULAR_DESTINATIONS } from './constants';
 
@@ -409,6 +410,8 @@ const App: React.FC = () => {
         isBottomPanelExpanded={isBottomPanelExpanded}
         isMobile={isMobile}
       />
+      
+      <PerformanceMonitor />
       
       {isSearching && (
         <div className="fixed inset-x-0 top-32 flex justify-center z-[2500] pointer-events-none">

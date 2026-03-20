@@ -1,6 +1,7 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Fuse from 'fuse.js';
 import { MapTheme, Destination, Language } from '../types';
 import { POPULAR_DESTINATIONS, TRANSLATIONS } from '../constants';
 import { getDistance } from 'ol/sphere';
@@ -47,6 +48,11 @@ export const Header: React.FC<HeaderProps> = ({
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(100);
 
+  const fuse = useMemo(() => new Fuse(POPULAR_DESTINATIONS, {
+    keys: [`name.${language}`, 'category.en'],
+    threshold: 0.3,
+  }), [language]);
+
   useEffect(() => {
     const handleTyping = () => {
       const currentPrompt = DISCOVERY_PROMPTS[promptIndex];
@@ -79,20 +85,15 @@ export const Header: React.FC<HeaderProps> = ({
       return;
     }
     const timer = setTimeout(async () => {
-      const q = query.toLowerCase().trim();
-      const results = POPULAR_DESTINATIONS.map(dest => {
-        const name = dest.name[language].toLowerCase();
+      const results = fuse.search(query).map(result => {
+        const dest = result.item;
         const distance = getDistance(dest.coords, mapCenter) / 1000;
-        let score = name.startsWith(q) ? 100 : (name.includes(q) ? 50 : 0);
-        return { ...dest, score, distance };
-      })
-      .filter(item => item.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 5);
+        return { ...dest, distance };
+      }).slice(0, 5);
       setSuggestions(results);
     }, 150);
     return () => clearTimeout(timer);
-  }, [query, language, mapCenter]);
+  }, [query, fuse, mapCenter]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
