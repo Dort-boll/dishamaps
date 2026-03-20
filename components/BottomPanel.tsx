@@ -51,7 +51,7 @@ export const BottomPanel: React.FC<BottomPanelProps> = ({
         y: 0
       }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className={`fixed bottom-0 left-0 right-0 z-[1400] rounded-t-[24px] lg:rounded-t-[60px] shadow-3xl flex flex-col transition-all duration-500 overflow-hidden ${theme === MapTheme.DARK ? 'glass bg-slate-950/95' : 'glass-light bg-white/95 border-white/90'}`}
+      className={`fixed bottom-0 left-0 right-0 z-[1400] rounded-t-[24px] lg:rounded-t-[60px] shadow-3xl flex flex-col transition-all duration-500 overflow-hidden ${theme === MapTheme.DARK ? 'glass' : 'glass-light'}`}
     >
       <div className="h-8 lg:h-12 flex items-center justify-center cursor-pointer group shrink-0" onClick={() => setIsExpanded(!isExpanded)}>
         <motion.div 
