@@ -1,0 +1,9 @@
+{
+  "name": "Disha Maps Pro",
+  "description": "AI-Powered spatial suite with natural language discovery and real-time urban telemetry.",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera",
+    "microphone"
+  ]
+}
